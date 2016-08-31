@@ -1,6 +1,12 @@
+#include "algorithms.h"
+#include <limits.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "harness.h"
 
-#define SIZE 10000000
+#define SIZE 30000
 
 bool isSorted(int* arr, int len) {
 	int prev = INT_MIN;
@@ -39,7 +45,9 @@ int main(int argc, char** argv) {
 
 	// insertionSort(arr, array_size);
 	// selectionSort(arr, array_size);
-	heapSort(&arr, array_size);
+	// heapSort(arr, array_size);
+	// mergeSort(arr, array_size);
 	printf("The array was %d sorted\n", isSorted(arr, array_size));
 
+	free(arr);
 }
