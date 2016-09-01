@@ -1,6 +1,8 @@
 #ifndef _algorithms_h
 #define _algorithms_h
 
+void printArray(int* arr, int len);
+
 void insertionSort(int* arr, int len);
 void selectionSort(int* arr, int len);
 void quickSort(int* arr, int len);

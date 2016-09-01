@@ -6,7 +6,7 @@
 #include <time.h>
 #include "harness.h"
 
-#define SIZE 30000
+#define SIZE 100000
 
 bool isSorted(int* arr, int len) {
 	int prev = INT_MIN;
@@ -40,13 +40,14 @@ int main(int argc, char** argv) {
 	srand((unsigned) time(NULL));
 	int* arr = (int*) malloc(array_size * sizeof(int));
 	for(int i = 0; i < array_size; i++) {
-		arr[i] = rand();
+		arr[i] = rand() % 30;
 	}
 
 	// insertionSort(arr, array_size);
 	// selectionSort(arr, array_size);
 	// heapSort(arr, array_size);
 	// mergeSort(arr, array_size);
+	// quickSort(arr, array_size);
 	printf("The array was %d sorted\n", isSorted(arr, array_size));
 
 	free(arr);

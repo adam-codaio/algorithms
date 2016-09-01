@@ -39,7 +39,7 @@ void copy(int* in, int* out, int len) {
  * indices in the provided array.
  */
 
-void inSwap(int* arr, int i, int j) {
+void swap(int* arr, int i, int j) {
 	int temp = arr[i];
 	arr[i] = arr[j];
 	arr[j] = temp;
@@ -69,10 +69,10 @@ void outSwap(int* in, int* out, int i, int j) {
 void bubbleUp(int* heap, int idx) {
 	while(idx > 0) {
 		if((idx % 2) && (heap[idx / 2] < heap[idx])) {
-			inSwap(heap, idx, idx / 2);
+			swap(heap, idx, idx / 2);
 			idx = idx / 2;
 		} else if(!(idx % 2) && heap[(idx - 1) / 2] < heap[idx]) {
-			inSwap(heap, idx, (idx - 1) / 2);
+			swap(heap, idx, (idx - 1) / 2);
 			idx = (idx - 1) / 2;
 		} else {
 			break;
@@ -113,11 +113,11 @@ void bubbleDown(int* heap, int idx, int bound) {
 			int right = heap[2 * idx + 2];
 			if(heap[idx] > left && heap[idx] > right) return;
 			int max_idx = left > right ? 2 * idx + 1 : 2 * idx + 2;
-			inSwap(heap, idx, max_idx);
+			swap(heap, idx, max_idx);
 			idx = max_idx;
 		} else {
 			if(heap[idx] > left) return;
-			inSwap(heap, idx, 2 * idx + 1);
+			swap(heap, idx, 2 * idx + 1);
 			idx = 2 * idx + 1;
 		}
 	}
@@ -193,7 +193,7 @@ void selectionSort(int* arr, int len) {
 				idx = j;
 			}
 		}
-		inSwap(arr, i, idx);
+		swap(arr, i, idx);
 	}
 }
 
@@ -262,7 +262,8 @@ void mergeSort(int* arr, int len) {
 		merge(&arr, &workspace, n, len);
 		n *= 2;
 	}
-	//This is necessary if the final array ends up in the workspace
+	// This is necessary if the final array ends up in the 
+	// memory allocated to workspace
 	if(orig != arr) {
 		copy(arr, orig, len);
 		free(arr);
@@ -271,6 +272,54 @@ void mergeSort(int* arr, int len) {
 	}
 }
 
+/*
+ * Implements Median of Three Partition Selection.
+ * ---------------------------------------------
+ * Looks at the first, middle, and last elements
+ * of the array, chooses the median and returns
+ * the index.
+ */
+
+int choosePartition(int* arr, int len) {
+	int first, middle, last;
+	first = arr[0];
+	middle = arr[len / 2];
+	last = arr[len - 1];
+	if(middle >= first && middle <= last) return len / 2;
+	if(middle >= last && middle <= first) return len / 2;
+	if(first >= middle && first <= last) return 0;
+	if(first >= last && first <= middle) return 0;
+	return len - 1;
+}
+
+/*
+ * Implements Quick Sort.
+ * ---------------------------------------------
+ * Uses Median of Three for selection partition.
+ * Put all elements less than the partition to 
+ * one side of the array and all elements to the
+ * other side. Then recursively sort the halfs.
+ */
+
+void quickSort(int* arr, int len) {
+	if(len <= 1) return;
+	int partition = choosePartition(arr, len);
+	int value = arr[partition];
+	swap(arr, partition, len - 1);
+	int min = 0, max = len - 2;
+	while(true) {
+		if(min > max) break;
+		if(arr[min] < value) {
+			min++;
+		} else {
+			swap(arr, min, max);
+			max--;
+		}
+	}
+	swap(arr, max + 1, len - 1);
+	quickSort(arr, max + 1);
+	quickSort(arr + (max + 2), len - (max + 2));
+}
 
 
 
